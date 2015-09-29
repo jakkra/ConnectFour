@@ -18,7 +18,7 @@ android {
 
     defaultConfig {
         applicationId "se.jakobkrantz.connectfour.app"
-        minSdkVersion 11
+        minSdkVersion 14
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
@@ -34,4 +34,5 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'de.hdodenhof:circleimageview:2.0.0'
 }

@@ -1,6 +1,10 @@
-package se.jakobkrantz.connectfour.app.game;/*
+package se.jakobkrantz.connectfour.app.game;
+
+/*
  * Created by jakkra on 2015-09-28.
  */
+
+import android.util.Log;
 
 public class ConnectFourGame {
     private byte[][] board;
@@ -15,6 +19,7 @@ public class ConnectFourGame {
     private boolean gameWon;
     private Player turnIs;
     private Player winner;
+    private XYCoord lastDrop;
 
 
     public ConnectFourGame(int cols, int rows, Player playerBlue, Player playerRed) {
@@ -28,20 +33,25 @@ public class ConnectFourGame {
     }
 
     public boolean dropTile(int posCol) {
+        Log.d(getClass().toString(), "dropTile at col: " + posCol);
         boolean isMoveLegit = false;
         if (gameWon) {
             return isMoveLegit;
         }
-
-        for (int row = 0; row < rowCount; row++) {
+        int row;
+        for (row = 0; row < rowCount; row++) {
             if (board[posCol][row] == EMPTY) {
                 board[posCol][row] = getCurrentColor();
                 isMoveLegit = true;
                 checkGameWon(posCol, row);
+                lastDrop = new XYCoord(posCol, row);
+                Log.d(getClass().toString(), "Legit move, dropped at row: " + row);
+                return isMoveLegit;
 
             }
         }
         return isMoveLegit;
+
     }
 
 
@@ -75,6 +85,7 @@ public class ConnectFourGame {
     }
 
     private boolean checkGameWon(int col, int row) {
+        Log.d(getClass().toString(), "LOL STUCK");
         int nbrInRow = 1;
         //check horizontal
         int currentCol = col - 1;
@@ -91,7 +102,7 @@ public class ConnectFourGame {
             winningUpdate();
             return true;
         }
-
+        Log.d(getClass().toString(), "LOL STUCK");
         //check vertical
         nbrInRow = 1;
         int currentRow = row - 1;
@@ -109,7 +120,7 @@ public class ConnectFourGame {
             winningUpdate();
             return true;
         }
-
+        Log.d(getClass().toString(), "LOL STUCK");
         //check diagonal top right - down left
         nbrInRow = 1;
         currentCol = col + 1;
@@ -132,7 +143,7 @@ public class ConnectFourGame {
             winningUpdate();
             return true;
         }
-
+        Log.d(getClass().toString(), "LOL STUCK");
         //check other diagonal
         nbrInRow = 1;
         currentCol = col - 1;
@@ -155,13 +166,20 @@ public class ConnectFourGame {
             winningUpdate();
             return true;
         }
+        Log.d(getClass().toString(), "No WIN");
 
         return false;
     }
 
-    private void winningUpdate(){
+    private void winningUpdate() {
         gameWon = true;
         winner = turnIs;
         winner.increaseScore();
     }
+
+    public XYCoord getLastDropCoord() {
+        return lastDrop;
+    }
+
+
 }

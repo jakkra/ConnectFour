@@ -5,5 +5,5 @@ package se.jakobkrantz.connectfour.app;/*
 import android.os.Bundle;
 
 public interface FragmentEventListener {
-    public void onEvent(GameHome.GameState gameState, Bundle args);
+    public void onEvent(Commons.GameState gameState, Bundle args);
 }
