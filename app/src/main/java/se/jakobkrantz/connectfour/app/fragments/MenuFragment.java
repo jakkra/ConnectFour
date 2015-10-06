@@ -35,7 +35,7 @@ public class MenuFragment extends Fragment {
             public void onClick(View v) {
                 Bundle args = new Bundle();
                 args.putString("p1", "Alex");
-                args.putString("p1", "Elin");
+                args.putString("p2", "Elin");
                 eventListener.onEvent(GameState.IN_GAME, args);
             }
         });
