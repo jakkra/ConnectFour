@@ -14,9 +14,9 @@ public class ConnectFourGame {
     private Player[] players;
     private int turnIsPlayer;
     private int winningPlayerIs;
-    private static byte EMPTY = 0;
-    private static byte BLUE = 1;
-    private static byte RED = 2;
+    public static byte EMPTY = 0;
+    public static byte BLUE = 1;
+    public static byte RED = 2;
     private boolean gameWon;
     private Point lastDrop;
 
@@ -30,20 +30,22 @@ public class ConnectFourGame {
         board = new byte[rows][cols];
         gameWon = false;
         turnIsPlayer = 0; //player 0 starts
+        winningPlayerIs = -1;
     }
 
-    private void printBoard() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("\n");
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[0].length; j++) {
-                sb.append(board[i][j] + "  ");
-            }
-            sb.append("\n");
-        }
-        Log.d(" ", "LOOL          \n" + sb.toString());
-
+    public ConnectFourGame(CompleteGameState gs) {
+    Log.d(getClass().getSimpleName(), "Using Saved state constructor");
+        board = gs.board;
+        colCount = board[0].length;
+        rowCount = board.length;
+        players = new Player[2];
+        players[0] = new Player(gs.player1, 0);
+        players[1] = new Player(gs.player2, 0);
+        turnIsPlayer = gs.turnIs;
+        gameWon = false;
+        winningPlayerIs = -1;
     }
+
 
     public boolean dropTile(int posCol) {
         Log.d(getClass().toString(), "dropTile at col: " + posCol);
@@ -64,13 +66,11 @@ public class ConnectFourGame {
                 } else {
                     Log.d(getClass().toString(), "Game won by player: " + getWinner().getName());
                 }
-                printBoard();
                 return isMoveLegit;
             }
         }
         Log.d(getClass().toString(), "Not legit move, did not drop at row: " + row);
         return isMoveLegit;
-
     }
 
 
@@ -86,6 +86,10 @@ public class ConnectFourGame {
         return players[turnIsPlayer];
     }
 
+    public Player[] getAllPlayers() {
+        return players;
+    }
+
     public void resetGame() {
         for (int row = 0; row < rowCount; row++) {
             for (int col = 0; col < colCount; col++) {
@@ -95,12 +99,24 @@ public class ConnectFourGame {
         winningPlayerIs = -1;
         gameWon = false;
         turnIsPlayer = 0;
+    }
 
+    public boolean isGameEven() {
+        for (int col = 0; col < colCount; col++) {
+            if (board[0][col] == EMPTY) {
+                return false;
+            }
+        }
+        Log.e("game is", "EVEN");
+        return true;
+    }
+
+    public CompleteGameState getCompleateGameState() {
+        return new CompleteGameState(board, players[0].getName(), players[1].getName(), turnIsPlayer);
     }
 
     private byte getCurrentColor() {
         return turnIsPlayer == 0 ? BLUE : RED;
-
     }
 
     private boolean checkGameWon(int row, int col) {

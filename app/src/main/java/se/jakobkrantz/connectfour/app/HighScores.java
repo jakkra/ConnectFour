@@ -5,6 +5,7 @@ package se.jakobkrantz.connectfour.app;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import se.jakobkrantz.connectfour.app.game.Player;
 
 import java.util.ArrayList;
@@ -16,12 +17,13 @@ public class HighScores {
 
 
     public static void increaseScore(Context c, String name){
+        Log.e("Highscores increase score", name);
         int score = getHighScoreOf(c, name);
         if(score != -1){
             score++;
             getEditor(c).putInt(name, score).commit();
         } else {
-            getEditor(c).putInt(name, 1);
+            getEditor(c).putInt(name, 1).commit();
         }
     }
 

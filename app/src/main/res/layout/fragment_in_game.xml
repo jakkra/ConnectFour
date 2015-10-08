@@ -13,14 +13,17 @@
             android:layout_weight="10.5">
         <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" android:layout_gravity="center_horizontal">
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/relative_bg">
 
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Turn"
-                    android:id="@+id/whos_turn_tv" android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true"/>
+                    android:id="@+id/whos_turn_tv"
+                    android:textIsSelectable="false" android:textSize="25sp" android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true" android:textColor="#ffd0d0d0"/>
         </RelativeLayout>
     </LinearLayout>
     <LinearLayout android:layout_width="fill_parent"
@@ -75,11 +78,18 @@
     </LinearLayout>
     <LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="9">
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:background="@color/accent_material_light"
                         android:orientation="vertical"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
 
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Restart game"
+                    android:id="@+id/restart_in_game_btn" android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"/>
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>
