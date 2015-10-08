@@ -4,6 +4,7 @@ package se.jakobkrantz.connectfour.app.game;
  * Created by jakkra on 2015-09-28.
  */
 
+import android.graphics.Point;
 import android.util.Log;
 
 public class ConnectFourGame {
@@ -17,18 +18,31 @@ public class ConnectFourGame {
     private static byte BLUE = 1;
     private static byte RED = 2;
     private boolean gameWon;
-    private XYCoord lastDrop;
+    private Point lastDrop;
 
 
-    public ConnectFourGame(int cols, int rows, Player playerBlue, Player playerRed) {
+    public ConnectFourGame(int rows, int cols, Player playerBlue, Player playerRed) {
         this.colCount = cols;
         this.rowCount = rows;
         players = new Player[2];
         players[0] = playerBlue;
         players[1] = playerRed;
-        board = new byte[cols][rows];
+        board = new byte[rows][cols];
         gameWon = false;
         turnIsPlayer = 0; //player 0 starts
+    }
+
+    private void printBoard() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n");
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                sb.append(board[i][j] + "  ");
+            }
+            sb.append("\n");
+        }
+        Log.d(" ", "LOOL          \n" + sb.toString());
+
     }
 
     public boolean dropTile(int posCol) {
@@ -40,24 +54,21 @@ public class ConnectFourGame {
         }
         int row;
         for (row = rowCount - 1; row >= 0; row--) {
-            if (board[posCol][row] == EMPTY) {
-                board[posCol][row] = getCurrentColor();
+            if (board[row][posCol] == EMPTY) {
+                board[row][posCol] = getCurrentColor();
                 isMoveLegit = true;
-                lastDrop = new XYCoord(posCol, row);
+                lastDrop = new Point(row, posCol);
                 Log.d(getClass().toString(), "Legit move, dropped at row: " + row + " Should land at col: " + posCol);
-                if (!checkGameWon(posCol, row)) {
+                if (!checkGameWon(row, posCol)) {
                     nextPlayer();
                 } else {
                     Log.d(getClass().toString(), "Game won by player: " + getWinner().getName());
-
                 }
+                printBoard();
                 return isMoveLegit;
-            } else {
-                Log.d(getClass().toString(), "Not legit move, did not drop at row: " + row);
-
             }
-
         }
+        Log.d(getClass().toString(), "Not legit move, did not drop at row: " + row);
         return isMoveLegit;
 
     }
@@ -76,9 +87,9 @@ public class ConnectFourGame {
     }
 
     public void resetGame() {
-        for (int col = 0; col < colCount; col++) {
-            for (int row = 0; row < rowCount; row++) {
-                board[col][row] = EMPTY;
+        for (int row = 0; row < rowCount; row++) {
+            for (int col = 0; col < colCount; col++) {
+                board[row][col] = EMPTY;
             }
         }
         winningPlayerIs = -1;
@@ -92,23 +103,23 @@ public class ConnectFourGame {
 
     }
 
-    private boolean checkGameWon(int col, int row) {
+    private boolean checkGameWon(int row, int col) {
         Log.d(getClass().toString(), "LOL STUCK");
         int nbrInRow = 1;
         int currentRow;
         int currentCol;
         //check horizontal
         currentCol = col - 1;
-        while (currentCol >= 0 && board[currentCol][row] == getCurrentColor()) {
+        while (currentCol >= 0 && board[row][currentCol] == getCurrentColor()) {
             currentCol--;
             nbrInRow++;
         }
         currentCol = col + 1;
-        while (currentCol < colCount && board[currentCol][row] == getCurrentColor()) {
+        while (currentCol < colCount && board[row][currentCol] == getCurrentColor()) {
             currentCol++;
             nbrInRow++;
         }
-        if (nbrInRow >= 5) {
+        if (nbrInRow >= 4) {
             winningUpdate();
             return true;
         }
@@ -116,26 +127,26 @@ public class ConnectFourGame {
         //check vertical
         nbrInRow = 1;
         currentRow = row - 1;
-        while (currentRow >= 0 && board[col][currentRow] == getCurrentColor()) {
+        while (currentRow >= 0 && board[currentRow][col] == getCurrentColor()) {
             currentRow--;
             nbrInRow++;
         }
         currentRow = row + 1;
-        while (currentRow < rowCount && board[col][currentRow] == getCurrentColor()) {
+        while (currentRow < rowCount && board[currentRow][col] == getCurrentColor()) {
             currentRow++;
             nbrInRow++;
         }
 
-        if (nbrInRow >= 5) {
+        if (nbrInRow >= 4) {
             winningUpdate();
             return true;
         }
         Log.d(getClass().toString(), "LOL STUCK");
-        //check diagonal top right - down left
+        //check diagonal top left - down right
         nbrInRow = 1;
         currentCol = col + 1;
         currentRow = row + 1;
-        while (currentCol < colCount && currentRow < rowCount && board[currentCol][currentRow] == getCurrentColor()) {
+        while (currentCol < colCount && currentRow < rowCount && board[currentRow][currentCol] == getCurrentColor()) {
             currentCol++;
             currentRow++;
             nbrInRow++;
@@ -143,22 +154,22 @@ public class ConnectFourGame {
 
         currentCol = col - 1;
         currentRow = row - 1;
-        while (currentCol >= 0 && currentRow >= 0 && board[currentCol][currentRow] == getCurrentColor()) {
+        while (currentCol >= 0 && currentRow >= 0 && board[currentRow][currentCol] == getCurrentColor()) {
             currentCol--;
             currentRow--;
             nbrInRow++;
         }
 
-        if (nbrInRow >= 5) {
+        if (nbrInRow >= 4) {
             winningUpdate();
             return true;
         }
         Log.d(getClass().toString(), "LOL STUCK");
-        //check other diagonal
+        //down left - up right
         nbrInRow = 1;
         currentCol = col - 1;
         currentRow = row + 1;
-        while (currentCol >= 0 && currentRow < rowCount && board[currentCol][currentRow] == getCurrentColor()) {
+        while (currentCol >= 0 && currentRow < rowCount && board[currentRow][currentCol] == getCurrentColor()) {
             currentCol--;
             currentRow++;
             nbrInRow++;
@@ -166,18 +177,17 @@ public class ConnectFourGame {
 
         currentCol = col + 1;
         currentRow = row - 1;
-        while (currentCol < colCount && currentRow >= 0 && board[currentCol][currentRow] == getCurrentColor()) {
+        while (currentCol < colCount && currentRow >= 0 && board[currentRow][currentCol] == getCurrentColor()) {
             currentCol++;
             currentRow--;
             nbrInRow++;
         }
 
-        if (nbrInRow >= 5) {
+        if (nbrInRow >= 4) {
             winningUpdate();
             return true;
         }
         Log.d(getClass().toString(), "No WIN");
-
         return false;
     }
 
@@ -192,7 +202,7 @@ public class ConnectFourGame {
         turnIsPlayer %= 2;
     }
 
-    public XYCoord getLastDropCoord() {
+    public Point getLastDropCoord() {
         return lastDrop;
     }
 

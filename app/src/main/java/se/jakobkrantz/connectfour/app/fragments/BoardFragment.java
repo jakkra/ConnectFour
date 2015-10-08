@@ -10,18 +10,20 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import de.hdodenhof.circleimageview.CircleImageView;
+import se.jakobkrantz.connectfour.app.Commons;
 import se.jakobkrantz.connectfour.app.FragmentEventListener;
 import se.jakobkrantz.connectfour.app.R;
 import se.jakobkrantz.connectfour.app.game.*;
 
 
-public class BoardFragment extends Fragment {
+public class BoardFragment extends Fragment implements View.OnClickListener, WinnerPresenterDialog.OnGameStateChangeListener {
     private ConnectFourGame connectFourGame;
     private Player p1, p2;
     private CircleImageView[][] boardCells;
@@ -45,32 +47,19 @@ public class BoardFragment extends Fragment {
         rowLayouts[5] = (LinearLayout) rootView.findViewById(R.id.row_5);
 
         CircleImageView imageView;
-        boardCells = new CircleImageView[COLUMNS][ROWS];
-        View.OnClickListener clickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Point coord = (Point) v.getTag(R.integer.image_view_coordinate_tag);
-                Toast.makeText(context, "Column: " + coord.x + " Row: " + coord.y + " clicked", Toast.LENGTH_SHORT).show();
-                if (connectFourGame.dropTile(coord.x)) {
-                    updateUiTurn();
-                    XYCoord lastDrop = connectFourGame.getLastDropCoord();
-                    boardCells[lastDrop.getX()][lastDrop.getY()].setBorderColor(currentColor());
-                    Log.d(getClass().toString(), "onItemClick col: " + lastDrop.getX() + " row: " + lastDrop.getY());
+        boardCells = new CircleImageView[ROWS][COLUMNS];
 
-                }
-            }
-        };
-        for (int col = 0; col < COLUMNS; col++) {
-            for (int row = 0; row < ROWS; row++) {
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLUMNS; col++) {
                 imageView = new CircleImageView(context);
                 imageView.setBorderColor(Color.DKGRAY);
                 imageView.setBorderWidth(5);
                 imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
                 imageView.setImageResource(R.drawable.ic_launcher);
-                imageView.setTag(R.integer.image_view_coordinate_tag, new Point(col, row));
-                imageView.setOnClickListener(clickListener);
+                imageView.setTag(R.integer.image_view_coordinate_tag, new Point(row, col));
+                imageView.setOnClickListener(this);
                 rowLayouts[row].addView(imageView);
-                boardCells[col][row] = imageView;
+                boardCells[row][col] = imageView;
             }
 
         }
@@ -90,27 +79,12 @@ public class BoardFragment extends Fragment {
         String playerTwoName = (String) args.get("p2");
         p1 = new Player(playerOneName, 0);
         p2 = new Player(playerTwoName, 0);
-        connectFourGame = new ConnectFourGame(COLUMNS, ROWS, p1, p2);
+        connectFourGame = new ConnectFourGame(ROWS, COLUMNS, p1, p2);
         updateUiTurn();
 
 
     }
 
-       /* boardView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                int colIndex = position % COLUMNS;
-                int rowIndex = position / (COLUMNS + 1);
-                Toast.makeText(context, "Position: " + position + " Column: " + colIndex + " Row: " + rowIndex + " clicked", Toast.LENGTH_SHORT).show();
-                if (connectFourGame.dropTile(colIndex)) {
-                    updateUiTurn();
-                    XYCoord lastDrop = connectFourGame.getLastDropCoord();
-                    boardCells[lastDrop.getX()][lastDrop.getY()].setBorderWidiews();
-                    Log.d(getClass().toString(), "onItemClick col: " + lastDrop.getX() + " row: " + lastDrop.getY());
-
-                }
-            }
-        });
-    }*/
 
     @Override
     public void onAttach(Activity activity) {
@@ -127,6 +101,42 @@ public class BoardFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        if (v instanceof CircleImageView) { // This is a little h4x I know
+            Point coord = (Point) v.getTag(R.integer.image_view_coordinate_tag);
+            int previousColor = getCurrentColor();
+            if (connectFourGame.dropTile(coord.y)) {
+                updateUiTurn();
+                Point lastDrop = connectFourGame.getLastDropCoord();
+                boardCells[lastDrop.x][lastDrop.y].setBorderColor(previousColor);
+
+                if (connectFourGame.isGameWon()) {
+                    Toast.makeText(context, "Game won by player: " + connectFourGame.getWinner().getName(), Toast.LENGTH_SHORT).show();
+
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
+                    WinnerPresenterDialog dialog = new WinnerPresenterDialog();
+                    Bundle args = new Bundle();
+                    args.putString("winner", connectFourGame.getWinner().getName());
+                    dialog.setArguments(args);
+                    dialog.setTargetFragment(this, 1);
+                    dialog.show(fm, "WinnerPresenter");
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onGameStateChange(Commons.GameState state) {
+        if(state == Commons.GameState.RESTART){
+            connectFourGame.resetGame();
+            clearBoard();
+            updateUiTurn();
+        } else if(state == Commons.GameState.HOME){
+            eventListener.onEvent(Commons.GameState.HOME, null);
+        }
+    }
+
     private void updateUiTurn() {
         if (connectFourGame.turnIs().equals(p1)) {
             whosTurn.setTextColor(Color.BLUE);
@@ -135,11 +145,8 @@ public class BoardFragment extends Fragment {
         }
     }
 
-    private XYCoord invertXYCoord(XYCoord xy) {
-        return new XYCoord(COLUMNS - xy.getX(), ROWS - xy.getY());
-    }
 
-    private int currentColor() {
+    private int getCurrentColor() {
         if (connectFourGame.turnIs().equals(p1)) {
             return Color.BLUE;
         } else {
@@ -147,48 +154,12 @@ public class BoardFragment extends Fragment {
         }
     }
 
-
-    public class ImageAdapter extends BaseAdapter {
-        private Context context;
-        private CircleImageView[] images;
-
-        public ImageAdapter(Context c, CircleImageView[][] matrix) {
-            images = new CircleImageView[matrix.length * matrix[0].length];
-            int imageIndex = 0;
-            for (int i = 0; i < matrix.length; i++) {
-                for (int j = 0; j < matrix[0].length; j++) {
-                    images[imageIndex] = matrix[i][j];
-                    imageIndex++;
-                }
-
+    private void clearBoard(){
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLUMNS; col++) {
+                boardCells[row][col].setBorderColor(Color.DKGRAY);
             }
-            context = c;
-        }
-
-        //---returns the number of images---
-        public int getCount() {
-            return images.length;
-        }
-
-        //---returns the ID of an item---
-        public Object getItem(int position) {
-            return position;
-        }
-
-        public long getItemId(int position) {
-            return position;
-        }
-
-        //---returns an ImageView view---
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                return images[position];
-            } else {
-                return convertView;
-            }
-
 
         }
     }
-
 }

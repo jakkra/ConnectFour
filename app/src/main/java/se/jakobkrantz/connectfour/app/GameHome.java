@@ -10,8 +10,6 @@ import se.jakobkrantz.connectfour.app.fragments.MenuFragment;
 import se.jakobkrantz.connectfour.app.Commons.GameState;
 
 public class GameHome extends ActionBarActivity implements FragmentEventListener {
-
-
     public GameState state;
 
 

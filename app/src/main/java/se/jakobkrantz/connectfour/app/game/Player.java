@@ -2,7 +2,7 @@ package se.jakobkrantz.connectfour.app.game;/*
  * Created by jakkra on 2015-09-28.
  */
 
-public class Player {
+public class Player implements Comparable<Player>{
     private String name;
     private int score;
     private byte color;
@@ -27,5 +27,10 @@ public class Player {
 
     public int getScore(){
         return score;
+    }
+
+    @Override
+    public int compareTo(Player another) {
+        return score - another.getScore();
     }
 }

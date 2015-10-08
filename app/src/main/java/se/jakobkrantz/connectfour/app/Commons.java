@@ -5,6 +5,6 @@ package se.jakobkrantz.connectfour.app;
 
 public class Commons {
     public enum GameState {
-        HOME, IN_GAME, HIGHSCORE;
+        HOME, IN_GAME, HIGHSCORE, RESTART
     }
 }
