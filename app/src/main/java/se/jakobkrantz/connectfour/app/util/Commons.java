@@ -1,4 +1,4 @@
-package se.jakobkrantz.connectfour.app;
+package se.jakobkrantz.connectfour.app.util;
 /*
  * Created by jakkra on 2015-09-29.
  */
@@ -23,11 +23,12 @@ public class Commons {
 
     /**
      * Copies a file in one destination and makes a copy which will be put at the destination.
+     *
      * @param sourceFile file that will be copied
-     * @param destFile destination file/location that the copy will be put at.
+     * @param destFile   destination file/location that the copy will be put at.
      * @throws IOException
      */
-     public static void copyFileToDest(File sourceFile, File destFile) throws IOException {
+    public static void copyFileToDest(File sourceFile, File destFile) throws IOException {
         if (!destFile.exists()) {
             destFile.createNewFile();
         }
@@ -46,7 +47,6 @@ public class Commons {
             }
         }
     }
-
 
 
 }

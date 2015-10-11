@@ -13,7 +13,7 @@ public class Player implements Comparable<Player>, Serializable {
     private int score;
 
     /**
-     * @param name of the player
+     * @param name  of the player
      * @param score score of the player
      */
     public Player(String name, int score) {

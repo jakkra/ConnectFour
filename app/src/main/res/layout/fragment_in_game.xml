@@ -84,17 +84,22 @@
                         android:layout_height="match_parent">
 
             <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="@string/restart_game_btn_label"
-                    android:id="@+id/restart_in_game_btn" android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true"/>
+                    android:id="@+id/restart_in_game_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+                    android:background="@drawable/btn_main_fragment_selector"
+                    android:layout_alignParentBottom="true" android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" android:layout_below="@+id/score_p2"/>
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/score_p1" android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true" android:layout_alignParentStart="true"
-                    android:textColor="@color/blue" android:textSize="16sp" android:paddingTop="2dp"
+                    android:textColor="@color/blue" android:textSize="20sp"
                     android:paddingLeft="5dp"/>
             <TextView
                     android:layout_width="wrap_content"
@@ -102,13 +107,13 @@
                     android:id="@+id/score_p2" android:layout_alignParentTop="true"
                     android:textColor="@color/red"
                     android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
-                    android:textSize="16sp" android:paddingRight="5dp" android:paddingTop="2dp"/>
+                    android:textSize="20sp" android:paddingRight="5dp" android:paddingTop="2dp"/>
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/session_score"
                     android:id="@+id/textView6" android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true" android:textSize="20sp"/>
+                    android:layout_centerHorizontal="true" android:textSize="22sp" android:paddingBottom="25dp"/>
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

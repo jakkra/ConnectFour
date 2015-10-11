@@ -17,10 +17,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
-import se.jakobkrantz.connectfour.app.Commons;
-import se.jakobkrantz.connectfour.app.FragmentEventListener;
+import se.jakobkrantz.connectfour.app.util.Commons;
 import se.jakobkrantz.connectfour.app.R;
-import se.jakobkrantz.connectfour.app.Commons.GameState;
+import se.jakobkrantz.connectfour.app.util.Commons.GameState;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,12 +52,13 @@ public class MenuFragment extends Fragment implements GameStartDialog.GameStartL
      */
     private void handleVisibilityOfResumeButton() {
         File f = getActivity().getFileStreamPath(Commons.SAVED_GAME_NAME);
-        if(!f.exists()){
+        if (!f.exists()) {
             resumeButton.setVisibility(View.INVISIBLE);
         } else {
             resumeButton.setVisibility(View.VISIBLE);
         }
     }
+
 
     @Override
     public void onGameStart(String p1, String p2) {
@@ -92,7 +92,9 @@ public class MenuFragment extends Fragment implements GameStartDialog.GameStartL
         }
     }
 
-    /** Tries to open the default text editor on the users phone with the specified file.
+    /**
+     * Tries to open the default text editor on the users phone with the specified file.
+     *
      * @param file file that will be opened in the external app.
      */
     private void openFileWithTextEditor(File file) {
@@ -103,10 +105,11 @@ public class MenuFragment extends Fragment implements GameStartDialog.GameStartL
             Log.d("mime type", mimeType);
             intent.setDataAndType(Uri.fromFile(file), mimeType);
             startActivity(intent);
-        } catch(ActivityNotFoundException e) {
+        } catch (ActivityNotFoundException e) {
             Toast.makeText(getActivity(), "Found no app to open .txt file with\n file saved at: " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
         }
     }
+
 
     @Override
     public void onAttach(Activity activity) {

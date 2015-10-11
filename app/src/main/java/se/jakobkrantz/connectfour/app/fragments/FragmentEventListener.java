@@ -1,8 +1,9 @@
-package se.jakobkrantz.connectfour.app;/*
+package se.jakobkrantz.connectfour.app.fragments;/*
  * Created by jakkra on 2015-09-28.
  */
 
 import android.os.Bundle;
+import se.jakobkrantz.connectfour.app.util.Commons;
 
 /**
  * Callback to pass data between two components, usually between an activity and a fragment.
@@ -11,8 +12,9 @@ import android.os.Bundle;
 public interface FragmentEventListener {
     /**
      * Callback with the requested state and data.
+     *
      * @param gameStatestate requested from child
-     * @param args data to be passed to parent
+     * @param args           data to be passed to parent
      */
     public void onEvent(Commons.GameState gameState, Bundle args);
 }

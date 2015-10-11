@@ -19,6 +19,9 @@ import android.view.ViewGroup;
 import android.widget.*;
 import se.jakobkrantz.connectfour.app.*;
 import se.jakobkrantz.connectfour.app.game.*;
+import se.jakobkrantz.connectfour.app.util.AuditLog;
+import se.jakobkrantz.connectfour.app.util.Commons;
+import se.jakobkrantz.connectfour.app.util.HighScores;
 
 import java.io.*;
 
@@ -196,6 +199,7 @@ public class BoardFragment extends Fragment implements View.OnClickListener, Win
 
     /**
      * Handles what should happen if the game was won.
+     *
      * @param winnerName name of the player that put the winning tile
      */
     private void handleWonGame(String winnerName) {
@@ -329,8 +333,8 @@ public class BoardFragment extends Fragment implements View.OnClickListener, Win
             whosTurn.setText(connectFourGame.turnIs().getName() + "'s turn");
         }
         Player[] players = connectFourGame.getAllPlayers();
-        playerOneScore.setText(players[0].getScore() + "");
-        playerTwoScore.setText(players[1].getScore() + "");
+        playerOneScore.setText(players[0].getName() + ": " +players[0].getScore() + "");
+        playerTwoScore.setText(players[1].getName() + ": " + players[1].getScore() + "");
 
     }
 

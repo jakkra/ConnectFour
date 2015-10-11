@@ -1,4 +1,4 @@
-package se.jakobkrantz.connectfour.app;
+package se.jakobkrantz.connectfour.app.util;
 /*
  * Created by jakkra on 2015-10-08.
  */

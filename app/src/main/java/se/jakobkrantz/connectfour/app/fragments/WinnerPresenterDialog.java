@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import se.jakobkrantz.connectfour.app.Commons.GameState;
+import se.jakobkrantz.connectfour.app.util.Commons.GameState;
 import se.jakobkrantz.connectfour.app.R;
 
 
@@ -45,7 +45,7 @@ public class WinnerPresenterDialog extends DialogFragment implements View.OnClic
     public void onStart() {
         super.onStart();
         TextView textView = (TextView) this.getDialog().findViewById(android.R.id.title);
-        if(textView != null){
+        if (textView != null) {
             textView.setGravity(Gravity.CENTER);
         }
     }
@@ -63,7 +63,7 @@ public class WinnerPresenterDialog extends DialogFragment implements View.OnClic
             if (v.getId() == R.id.restart_game_button) {
                 callback.onGameStateChange(GameState.RESTART);
 
-            } else if(v.getId() == R.id.back_to_home_button){
+            } else if (v.getId() == R.id.back_to_home_button) {
                 callback.onGameStateChange(GameState.HOME);
 
 

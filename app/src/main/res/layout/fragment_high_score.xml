@@ -12,11 +12,14 @@
             android:scrollbars="vertical"
             android:id="@+id/hs_list" android:layout_below="@+id/textView" android:layout_centerHorizontal="true"/>
     <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:background="@color/accent_material_light"
             android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/material_blue_grey_800"
             android:text="@string/highscore_fragment_label"
-            android:id="@+id/textView" android:layout_alignParentTop="true" android:layout_centerHorizontal="true"
-            android:layout_marginTop="21dp"/>
+            android:id="@+id/textView" android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true" android:paddingTop="10dp" android:paddingBottom="10dp"
+            android:gravity="center"/>
 
 </RelativeLayout>

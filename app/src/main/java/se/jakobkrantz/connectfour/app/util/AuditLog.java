@@ -1,4 +1,4 @@
-package se.jakobkrantz.connectfour.app;
+package se.jakobkrantz.connectfour.app.util;
 /*
  * Created by jakkra on 2015-10-08.
  */
@@ -20,7 +20,7 @@ public class AuditLog {
     private File file;
     private DateFormat dateFormat;
 
-    public AuditLog(Context context, String fileName){
+    public AuditLog(Context context, String fileName) {
         file = new File(context.getFilesDir(), fileName);
         dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
@@ -28,9 +28,10 @@ public class AuditLog {
 
     /**
      * Writes a message and appends it to the log, adds a newline at the end.
+     *
      * @param message message to be written
      */
-    public void writeLog(String message){
+    public void writeLog(String message) {
 
         try {
             Date date = new Date();
@@ -46,9 +47,10 @@ public class AuditLog {
 
     /**
      * For reading the log from inside the app.
+     *
      * @return the full log
      */
-    public String readLog(){
+    public String readLog() {
         Log.e("Audit file path", file.getAbsolutePath());
         StringBuilder text = new StringBuilder();
         try {
@@ -61,8 +63,7 @@ public class AuditLog {
             }
             br.close();
             return text.toString();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             Log.e(getClass().getSimpleName(), "Error reading from auditLog", e);
         }
         return "";

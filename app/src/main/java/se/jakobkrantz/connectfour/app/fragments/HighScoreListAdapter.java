@@ -24,7 +24,6 @@ public class HighScoreListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public HighScoreListAdapter(ArrayList<Player> hsList) {
         this.hsList = hsList;
-        Log.e("HS adapter", hsList.toString());
     }
 
 
@@ -49,7 +48,7 @@ public class HighScoreListAdapter extends RecyclerView.Adapter<RecyclerView.View
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
         if (viewHolder instanceof ViewHolderItem) {
             TextView row = ((ViewHolderItem) viewHolder).textView;
-            row.setText(hsList.get(i).getName() + " : " +hsList.get(i).getScore());
+            row.setText(hsList.get(i).getName() + " : " + hsList.get(i).getScore());
         }
     }
 

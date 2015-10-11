@@ -2,7 +2,6 @@
 <resources>
 
     <string name="app_name">ConnectFour</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="game_won">Game won!</string>
     <string name="select_names">Choose names</string>
@@ -10,7 +9,7 @@
     <string name="go_back_home">Back home</string>
     <string name="resume_button_name">Resume</string>
     <string name="new_game_button_name">New Game</string>
-    <string name="highscore_button_name">Highscore</string>
+    <string name="highscore_button_name">High score</string>
     <string name="save_audit_button_name">Save and view audit log</string>
     <string name="app_title_home">Four In a\nRow</string>
     <string name="session_score">Session score</string>
@@ -22,6 +21,6 @@
     <string name="winner_here_label">winner here</string>
     <string name="restart_btn_label">Restart</string>
     <string name="back_to_menu_btn_label">Back to menu</string>
-    <string name="highscore_fragment_label">HIGHSCORES</string>
+    <string name="highscore_fragment_label">HIGH SCORES</string>
 
 </resources>

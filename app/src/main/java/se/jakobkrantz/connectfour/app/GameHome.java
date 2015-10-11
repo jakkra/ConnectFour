@@ -1,12 +1,14 @@
 package se.jakobkrantz.connectfour.app;
 
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import se.jakobkrantz.connectfour.app.fragments.BoardFragment;
 import se.jakobkrantz.connectfour.app.fragments.HighScoreFragment;
 import se.jakobkrantz.connectfour.app.fragments.MenuFragment;
-import se.jakobkrantz.connectfour.app.Commons.GameState;
+import se.jakobkrantz.connectfour.app.util.Commons.GameState;
+import se.jakobkrantz.connectfour.app.fragments.FragmentEventListener;
 
 /**
  * Parent activity that hide and shows different fragments, depending on the state of the app.
@@ -39,6 +41,10 @@ public class GameHome extends ActionBarActivity implements FragmentEventListener
             case HOME:
                 MenuFragment menuFragment = new MenuFragment();
                 menuFragment.setArguments(args);
+                final FragmentManager fragmentManager = getSupportFragmentManager();
+                while (fragmentManager.getBackStackEntryCount() != 0) {
+                    fragmentManager.popBackStackImmediate();
+                }
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, menuFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
                 break;
             case HIGHSCORE:
