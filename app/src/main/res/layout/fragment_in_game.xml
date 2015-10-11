@@ -20,10 +20,10 @@
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Turn"
+                    android:text="@string/turn_label"
                     android:id="@+id/whos_turn_tv"
                     android:textIsSelectable="false" android:textSize="25sp" android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true" android:textColor="#ffd0d0d0"/>
+                    android:layout_centerHorizontal="true" android:textColor="@color/white"/>
         </RelativeLayout>
     </LinearLayout>
     <LinearLayout android:layout_width="fill_parent"
@@ -83,13 +83,32 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
-
             <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Restart game"
+                    android:text="@string/restart_game_btn_label"
                     android:id="@+id/restart_in_game_btn" android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/score_p1" android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true" android:layout_alignParentStart="true"
+                    android:textColor="@color/blue" android:textSize="16sp" android:paddingTop="2dp"
+                    android:paddingLeft="5dp"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/score_p2" android:layout_alignParentTop="true"
+                    android:textColor="@color/red"
+                    android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
+                    android:textSize="16sp" android:paddingRight="5dp" android:paddingTop="2dp"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/session_score"
+                    android:id="@+id/textView6" android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true" android:textSize="20sp"/>
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

@@ -4,22 +4,22 @@ package se.jakobkrantz.connectfour.app.fragments;
  */
 
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import se.jakobkrantz.connectfour.app.FragmentEventListener;
 import se.jakobkrantz.connectfour.app.HighScores;
 import se.jakobkrantz.connectfour.app.R;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+/**
+ * Fragment that contains a high score list.
+ */
 public class HighScoreFragment extends Fragment{
-    private FragmentEventListener eventListener;
     private Button resumeButton, newGameButton, highscoreButton;
 
     @Override
@@ -38,20 +38,5 @@ public class HighScoreFragment extends Fragment{
         highScoreList.setItemAnimator(new DefaultItemAnimator());
 
         return rootView;
-    }
-
-
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        // Make sure that the container activity has implemented
-        // the listener interface. If not, it throws an exception.
-        try {
-            eventListener = (FragmentEventListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnEventListener");
-        }
     }
 }

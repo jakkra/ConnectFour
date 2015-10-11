@@ -1,17 +1,29 @@
-package se.jakobkrantz.connectfour.app.game;/*
+package se.jakobkrantz.connectfour.app.game;
+/*
  * Created by jakkra on 2015-09-28.
  */
 
-public class Player implements Comparable<Player>{
+import java.io.Serializable;
+
+/**
+ * Representation of a Player
+ */
+public class Player implements Comparable<Player>, Serializable {
     private String name;
     private int score;
-    private byte color;
 
-    public Player(String name, int score){
+    /**
+     * @param name of the player
+     * @param score score of the player
+     */
+    public Player(String name, int score) {
         this.name = name;
         this.score = score;
     }
 
+    /**
+     * @return the name of the player
+     */
     public String getName() {
         return name;
     }
@@ -21,11 +33,17 @@ public class Player implements Comparable<Player>{
         return name.equals(p.getName());
     }
 
+    /**
+     * Increases the score of this player by one.
+     */
     public void increaseScore() {
         score += 1;
     }
 
-    public int getScore(){
+    /**
+     * @return the score of this player object.
+     */
+    public int getScore() {
         return score;
     }
 

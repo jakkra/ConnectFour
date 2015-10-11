@@ -15,7 +15,11 @@ import android.widget.TextView;
 import se.jakobkrantz.connectfour.app.R;
 
 
-public class NewGameStartDialog extends DialogFragment implements View.OnClickListener {
+/**
+ * Displays an dialog that the user may fill with details. Will make a Callback to the parent
+ * with the details put in.
+ */
+public class GameStartDialog extends DialogFragment implements View.OnClickListener {
 
     private TextView tvPlayer1;
     private TextView tvPlayer2;
@@ -42,7 +46,7 @@ public class NewGameStartDialog extends DialogFragment implements View.OnClickLi
     public void onStart() {
         super.onStart();
         TextView textView = (TextView) this.getDialog().findViewById(android.R.id.title);
-        if(textView != null){
+        if (textView != null) {
             textView.setGravity(Gravity.CENTER);
         }
     }
@@ -50,26 +54,39 @@ public class NewGameStartDialog extends DialogFragment implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        OnGameStartListener callback;
+        doCallback(v);
+        dismiss();
+    }
+
+    /**
+     * Tries to do a callback to the GameStartListener if there is any, otherwise nothing is done
+     *
+     * @param v
+     */
+    private void doCallback(View v) {
+        GameStartListener callback = null;
         try {
-            callback = (OnGameStartListener) getTargetFragment();
+            callback = (GameStartListener) getTargetFragment();
         } catch (ClassCastException e) {
             Log.e(this.getClass().getSimpleName(), "OnGameStartListener of this class must be implemented by target fragment!", e);
-            throw e;
         }
         if (callback != null) {
-
             if (v.getId() == R.id.start_game_button) {
                 callback.onGameStart(tvPlayer1.getText().toString(), tvPlayer2.getText().toString());
-
             }
 
         }
-        getDialog().dismiss(); //TODO Not recommended to do this, should be changed I believe
     }
 
 
-    public interface OnGameStartListener {
+    /**
+     * Callback with data from a GameStartDialog.
+     */
+    public interface GameStartListener {
+        /**
+         * @param p1 name of player one
+         * @param p2 name of player two
+         */
         public void onGameStart(String p1, String p2);
     }
 }

@@ -4,10 +4,14 @@ package se.jakobkrantz.connectfour.app.fragments;
  */
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +26,10 @@ import java.io.File;
 import java.io.IOException;
 
 
-public class MenuFragment extends Fragment implements NewGameStartDialog.OnGameStartListener, View.OnClickListener {
+/**
+ * The main fragment which handles and displays the different menu options for the user.
+ */
+public class MenuFragment extends Fragment implements GameStartDialog.GameStartListener, View.OnClickListener {
     private FragmentEventListener eventListener;
     private Button resumeButton, newGameButton, highscoreButton;
 
@@ -37,14 +44,27 @@ public class MenuFragment extends Fragment implements NewGameStartDialog.OnGameS
         newGameButton.setOnClickListener(this);
         highscoreButton.setOnClickListener(this);
         resumeButton.setOnClickListener(this);
+        handleVisibilityOfResumeButton();
         return rootView;
+    }
+
+    /**
+     * shows or hides the resume button deeding on if there are a saved game or not.
+     */
+    private void handleVisibilityOfResumeButton() {
+        File f = getActivity().getFileStreamPath(Commons.SAVED_GAME_NAME);
+        if(!f.exists()){
+            resumeButton.setVisibility(View.INVISIBLE);
+        } else {
+            resumeButton.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void onGameStart(String p1, String p2) {
         Bundle args = new Bundle();
-        args.putString("p1", p1);
-        args.putString("p2", p2);
+        args.putString(Commons.PLAYER_ONE_NAME_TAG, p1);
+        args.putString(Commons.PLAYER_TWO_NAME_TAG, p2);
         eventListener.onEvent(GameState.IN_GAME, args);
     }
 
@@ -52,7 +72,7 @@ public class MenuFragment extends Fragment implements NewGameStartDialog.OnGameS
     public void onClick(View v) {
         if (v.getId() == R.id.new_game_button) {
             FragmentManager fm = getActivity().getSupportFragmentManager();
-            NewGameStartDialog dialog = new NewGameStartDialog();
+            GameStartDialog dialog = new GameStartDialog();
             dialog.setTargetFragment(this, 1);
             dialog.show(fm, "GameStart");
         } else if (v.getId() == R.id.resume_button) {
@@ -60,16 +80,31 @@ public class MenuFragment extends Fragment implements NewGameStartDialog.OnGameS
         } else if (v.getId() == R.id.highscore_button) {
             eventListener.onEvent(GameState.HIGHSCORE, null);
         } else if (v.getId() == R.id.save_audit_button) {
-
             try {
-                File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/auditLOG");
-                Commons.copyFileUsingFileStreams(getActivity().getFileStreamPath("gameSaved"), file);
+                File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/" + Commons.AUDIT_LOG_FILE_NAME);
+                Commons.copyFileToDest(getActivity().getFileStreamPath(Commons.AUDIT_LOG_FILE_NAME), file);
                 Toast.makeText(getActivity(), "Audit log saved in your downloads folder", Toast.LENGTH_LONG).show();
-
+                openFileWithTextEditor(file);
             } catch (IOException e) {
                 e.printStackTrace();
                 Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
             }
+        }
+    }
+
+    /** Tries to open the default text editor on the users phone with the specified file.
+     * @param file file that will be opened in the external app.
+     */
+    private void openFileWithTextEditor(File file) {
+        try {
+            Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
+            String extension = android.webkit.MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(file).toString());
+            String mimeType = android.webkit.MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+            Log.d("mime type", mimeType);
+            intent.setDataAndType(Uri.fromFile(file), mimeType);
+            startActivity(intent);
+        } catch(ActivityNotFoundException e) {
+            Toast.makeText(getActivity(), "Found no app to open .txt file with\n file saved at: " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
         }
     }
 

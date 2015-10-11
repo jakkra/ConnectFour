@@ -8,6 +8,9 @@ import se.jakobkrantz.connectfour.app.fragments.HighScoreFragment;
 import se.jakobkrantz.connectfour.app.fragments.MenuFragment;
 import se.jakobkrantz.connectfour.app.Commons.GameState;
 
+/**
+ * Parent activity that hide and shows different fragments, depending on the state of the app.
+ */
 public class GameHome extends ActionBarActivity implements FragmentEventListener {
     public GameState state;
 
@@ -15,18 +18,13 @@ public class GameHome extends ActionBarActivity implements FragmentEventListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_game_home);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new MenuFragment())
                     .commit();
         }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
     }
 
     @Override
@@ -41,7 +39,7 @@ public class GameHome extends ActionBarActivity implements FragmentEventListener
             case HOME:
                 MenuFragment menuFragment = new MenuFragment();
                 menuFragment.setArguments(args);
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, menuFragment).addToBackStack("menu").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, menuFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
                 break;
             case HIGHSCORE:
                 HighScoreFragment hsFragment = new HighScoreFragment();

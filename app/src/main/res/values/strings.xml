@@ -11,7 +11,17 @@
     <string name="resume_button_name">Resume</string>
     <string name="new_game_button_name">New Game</string>
     <string name="highscore_button_name">Highscore</string>
-    <string name="save_audit_button_name">Save audit log</string>
+    <string name="save_audit_button_name">Save and view audit log</string>
     <string name="app_title_home">Four In a\nRow</string>
+    <string name="session_score">Session score</string>
+    <string name="restart_game_btn_label">Restart game</string>
+    <string name="turn_label">Turn</string>
+    <string name="player_one_label">Player one</string>
+    <string name="player_two_label">Player two</string>
+    <string name="start_new_game_label">Start new game!</string>
+    <string name="winner_here_label">winner here</string>
+    <string name="restart_btn_label">Restart</string>
+    <string name="back_to_menu_btn_label">Back to menu</string>
+    <string name="highscore_fragment_label">HIGHSCORES</string>
 
 </resources>

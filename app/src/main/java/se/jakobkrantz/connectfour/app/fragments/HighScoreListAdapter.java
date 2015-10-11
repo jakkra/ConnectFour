@@ -15,6 +15,9 @@ import se.jakobkrantz.connectfour.app.game.Player;
 import java.util.ArrayList;
 
 
+/**
+ * Adapter that handles what and how to show a list of Players their corresponding score in a RecyclerView.
+ */
 public class HighScoreListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_ITEM = 1;
     private ArrayList<Player> hsList;
@@ -56,7 +59,9 @@ public class HighScoreListAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
 
-
+    /**
+     * Simple ViewHolder to display a player name and score
+     */
     public static class ViewHolderItem extends RecyclerView.ViewHolder {
         public final TextView textView;
 

@@ -70,7 +70,7 @@ public class WinnerPresenterDialog extends DialogFragment implements View.OnClic
             }
 
         }
-        getDialog().dismiss(); //TODO Not recommended to do this, should be changed I believe
+        dismiss();
     }
 
 
