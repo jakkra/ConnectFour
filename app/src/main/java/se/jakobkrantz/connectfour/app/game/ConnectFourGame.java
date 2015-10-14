@@ -173,7 +173,7 @@ public class ConnectFourGame {
      *
      * @param row row coordinate
      * @param col column coordinate
-     * @return
+     * @return true if the last tile drop did result in a win
      */
     private boolean checkGameWon(int row, int col) {
         if (checkWinHorizontal(row, col)) return true;
